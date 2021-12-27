@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { View, Text,StyleSheet,ImageBackground,Image,Dimensions,StatusBar} from 'react-native';
+import { View, Text,StyleSheet,ImageBackground,Image,Dimensions,StatusBar, ScrollView} from 'react-native';
 import SearchBar from './SearchBar';
 import {haze,rainy,snow,sunny} from '../assets/background/index';
 
@@ -10,9 +10,10 @@ const Weather = ({weatherData , fetchWeatherData}) => {
     const {
         coord:{lon,lat},
         timezone,
-        sys:{sunrise,sunset},
+        sys:{sunrise,country,sunset},
         weather,
         name,
+        clouds:{all},
         main:{temp,pressure,humidity,feels_like},
         wind:{speed,deg}
         } = weatherData;
@@ -38,7 +39,7 @@ const Weather = ({weatherData , fetchWeatherData}) => {
             <StatusBar style={styles.statusBar} />        
             <ImageBackground source={backgroundImage}
             style = {styles.backgroundImage}
-            resizeMode='cover'
+            //resizeMode='cover'
             blurRadius={3}
             >
 
@@ -50,6 +51,7 @@ const Weather = ({weatherData , fetchWeatherData}) => {
 
             
             </View>
+            <ScrollView>
             <View style={styles.extraInfo}>
 
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Humidity: {humidity} %</Text>
@@ -60,9 +62,9 @@ const Weather = ({weatherData , fetchWeatherData}) => {
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Sunrise: {(((sunrise/timezone)/86400)*24).toFixed(2)} | Sunset: {(((sunset/timezone)/86400)*24).toFixed(2)}</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Timezone:{(timezone/86400)*24}</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Lon: {lon} | Lat: {lat}</Text>
-
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Cloudyness: {all} | Country: {country}</Text>
             </View>
-
+            </ScrollView>
             </ImageBackground>
             </View>
     )
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
         marginTop:10,
         justifyContent:'space-between',
         padding:10,
-        backgroundColor:'rgba(0,0,0,0.3)',
+        backgroundColor:'rgba(0,0,0,0.2)',
         alignItems: 'center',
         borderRadius:10
     }

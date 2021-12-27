@@ -8,10 +8,13 @@ const Weather = ({weatherData , fetchWeatherData}) => {
 
     const [backgroundImage,setBackgroundImage] = useState(null);
     const {
+        coord:{lon,lat},
+        timezone,
+        sys:{sunrise,sunset},
         weather,
         name,
-        main:{temp,humidity},
-        wind:{speed}
+        main:{temp,pressure,humidity,feels_like},
+        wind:{speed,deg}
         } = weatherData;
     const [{main}] = weather;
     useEffect(() => {
@@ -36,20 +39,27 @@ const Weather = ({weatherData , fetchWeatherData}) => {
             <ImageBackground source={backgroundImage}
             style = {styles.backgroundImage}
             resizeMode='cover'
+            blurRadius={3}
             >
 
             <SearchBar fetchWeatherData={fetchWeatherData}/>
             <View styles={styles.info}>
                 <Text style={{...styles.headerText,color:textColor,fontWeight:"bold",fontSize:50}}>{name}</Text>
                 <Text style={{...styles.headerText,color:textColor,fontWeight:"bold"}}>{main}</Text>
-                <Text style={{...styles.headerText,color:textColor}}>{temp} °C</Text>
+                <Text style={{...styles.headerText,color:textColor}}>{(temp-273.15).toFixed(2)} °C</Text>
 
             
             </View>
             <View style={styles.extraInfo}>
 
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Humidity: {humidity} %</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Pressure: {pressure} hPa</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Wind Speed: {speed} m/s</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Wind Direction: {deg} degree/(s)</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Feels Like: {(feels_like-273.15).toFixed(2)} °C</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Sunrise: {(((sunrise/timezone)/86400)*24).toFixed(2)} | Sunset: {(((sunset/timezone)/86400)*24).toFixed(2)}</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Timezone:{(timezone/86400)*24}</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Lon: {lon} | Lat: {lat}</Text>
 
             </View>
 

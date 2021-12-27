@@ -1,7 +1,6 @@
 import React,{useState} from 'react'
 import { View, TextInput,StyleSheet } from 'react-native'
-import { EvilIcons } from '@expo/vector-icons'; 
-
+import { EvilIcons } from '@expo/vector-icons';
 const SearchBar = ({fetchWeatherData}) => {
 
 

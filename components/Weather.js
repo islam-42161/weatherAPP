@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { View, Text,StyleSheet,ImageBackground,Image,Dimensions,StatusBar, ScrollView} from 'react-native';
+import { EvilIcons } from '@expo/vector-icons';
 import SearchBar from './SearchBar';
 import {haze,rainy,snow,sunny} from '../assets/background/index';
 
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize:36,
-        marginTop:10,
+        //marginTop:10,
         textAlign:'center'
     },
     info:{
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
         marginTop:10,
         justifyContent:'space-between',
         padding:10,
-        backgroundColor:'rgba(0,0,0,0.2)',
+        backgroundColor:'rgba(0,0,0,0.3)',
         alignItems: 'center',
         borderRadius:10
     }

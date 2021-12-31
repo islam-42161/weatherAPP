@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, useLayoutEffect} from 'react';
 import { ActivityIndicator, StyleSheet, Text, View,Dimensions } from 'react-native';
 import Weather from './components/Weather';
 import SearchBar from './components/SearchBar';
@@ -12,10 +12,10 @@ export default function App() {
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [cityName,setcityName] = useState('');
 
   const [weatherData,setWeatherData] = useState(null);
   const [loaded,setLoaded] = useState(true);
-  
   
   useEffect(() => {
 
@@ -39,7 +39,7 @@ export default function App() {
     }
 
     //fetch weather according to city name
-    fetchWeatherData("Dhaka");
+    fetchWeatherData(cityName);
     console.log(weatherData);
 
   },[])
@@ -56,18 +56,20 @@ export default function App() {
 
   async function fetchCityName(latitude, longitude){
   setLoaded(false);
-  const API = `http://api.positionstack.com/v1/reverse?access_key=${geo_coding_api_key}&query=${latitude},${longitude}&limit=10&output=json`;
+  //const API = `http://api.positionstack.com/v1/reverse?access_key=${geo_coding_api_key}&query=${latitude},${longitude}&limit=10&output=json`;
+  const API = `http://api.positionstack.com/v1/reverse?access_key=${geo_coding_api_key}&query=23.777176,90.399452&limit=10&output=json`;
   try{
     const response = await fetch(API);
     if(response.status==200){
-      const tottho = await response.json();
-      console.log(tottho.data[0].region);
+      const data = await response.json();
+      setcityName(JSON.stringify(data.data[0].region));
+      console.log(cityName);
     }else{
-      console.log('could not load city name according to geolocation')
+      console.log(response.statusText)
     }
     setLoaded(true);
   }catch(error){
-    console.warn(error);
+    console.log(error);
   }
   }
 

@@ -4,8 +4,8 @@ import Weather from './components/Weather';
 import SearchBar from './components/SearchBar';
 import * as Location from 'expo-location';
 
-
 const API_KEY = "11ced9c0cfaf46a783f25dfb6343713d";
+const geo_coding_api_key = "e8f8cad1aab91fbedfea143af5371d40";  
 
 
 export default function App() {
@@ -16,7 +16,10 @@ export default function App() {
   const [weatherData,setWeatherData] = useState(null);
   const [loaded,setLoaded] = useState(true);
   
+  
   useEffect(() => {
+
+    //get device location
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -27,8 +30,18 @@ export default function App() {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
+
+    //fetch city name according to device location
+    if (location) {
+      lat = JSON.stringify(location.coords.latitude);
+      long = JSON.stringify(location.coords.longitude);
+      fetchCityName(lat, long);
+    }
+
+    //fetch weather according to city name
     fetchWeatherData("Dhaka");
     console.log(weatherData);
+
   },[])
   
   let geoLocationPosition = 'Waiting...';
@@ -38,13 +51,30 @@ export default function App() {
   } 
   else if (location) {
     geoLocationPosition = JSON.stringify(location);
-    lat = JSON.stringify(location.coords.latitude);
-    long = JSON.stringify(location.coords.longitude);
   }
+
+
+  async function fetchCityName(latitude, longitude){
+  setLoaded(false);
+  const API = `http://api.positionstack.com/v1/reverse?access_key=${geo_coding_api_key}&query=${latitude},${longitude}&limit=10&output=json`;
+  try{
+    const response = await fetch(API);
+    if(response.status==200){
+      const tottho = await response.json();
+      console.log(tottho.data[0].region);
+    }else{
+      console.log('could not load city name according to geolocation')
+    }
+    setLoaded(true);
+  }catch(error){
+    console.warn(error);
+  }
+  }
+
+
   async function fetchWeatherData(cityName){
     setLoaded(false);
-    const API = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
-    const citynameApi = `https://us1.locationiq.com/v1/reverse.php?key=66cf9d686ef84716c0b6ae67389d285b&lat=${lat}lon=${long}&format=json`
+    const API = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`;
     try {
       const response = await fetch(API);
       
@@ -67,9 +97,7 @@ export default function App() {
   if(!loaded){
     return(
     <View style={styles.container}>
-
-      <ActivityIndicator color="grey" size={36}/>
-
+      <ActivityIndicator color="coral" size={36}/>
     </View>
     )
     
@@ -78,7 +106,7 @@ export default function App() {
       return(
       <View style={styles.nullContainer}>
         <SearchBar fetchWeatherData={fetchWeatherData}/>
-        <Text style={styles.primaryText}>City Not Found! Try searching different city. Latitude: {lat} Longitude: {long}</Text>
+        <Text style={styles.primaryText}>City Not Found! Wanna try searching different city? lat:{lat} long:{long}</Text>
       </View>
       )
   }

@@ -48,23 +48,22 @@ const Weather = ({weatherData , fetchWeatherData}) => {
             <View styles={styles.info}>
                 <Text style={{...styles.headerText,color:textColor,fontWeight:"bold",fontSize:50}}>{name}</Text>
                 <Text style={{...styles.headerText,color:textColor,fontWeight:"bold"}}>{main}</Text>
-                <Text style={{...styles.headerText,color:textColor}}>{(temp-273.15).toFixed(2)} °C</Text>
+                <Text style={{...styles.headerText,color:textColor}}>{temp} °C</Text>
 
             
             </View>
-            <ScrollView>
-            <View style={styles.extraInfo}>
+            <ScrollView contentContainerStyle={styles.extraInfo}>
 
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Humidity: {humidity} %</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Pressure: {pressure} hPa</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Wind Speed: {speed} m/s</Text>
-                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Wind Direction: {deg} degree/(s)</Text>
-                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Feels Like: {(feels_like-273.15).toFixed(2)} °C</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Wind Direction: {deg}°</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Feels like: {feels_like}°C</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Sunrise: {(((sunrise/timezone)/86400)*24).toFixed(2)} | Sunset: {(((sunset/timezone)/86400)*24).toFixed(2)}</Text>
-                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Timezone:{(timezone/86400)*24}</Text>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Timezone: {(timezone/86400)*24}</Text>
                 <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Lon: {lon} | Lat: {lat}</Text>
-                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Cloudyness: {all} | Country: {country}</Text>
-            </View>
+                <Text style={{fontSize:22,textAlign:'center',fontWeight:'bold',marginTop:10,color:textColor}}>Cloudyness: {all}% | Country: {country}</Text>
+
             </ScrollView>
             </ImageBackground>
             </View>
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
         padding:10,
     },
     extraInfo:{
-        marginTop:10,
+        margin:10,
         justifyContent:'space-between',
         padding:10,
         backgroundColor:'rgba(0,0,0,0.3)',
